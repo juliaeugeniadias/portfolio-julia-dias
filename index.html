@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - Júlia Eugênia Dias de Souza</title>
+    <style>
+        /* Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Calibri', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1A2D5E 0%, #78A9EC 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #D4A255;
+            object-fit: cover;
+            margin-bottom: 15px;
+            background-color: #2F5FA3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            margin-top: 15px;
+        }
+
+        .profile-info h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+            color: #fff;
+        }
+
+        /* Seções do Portfólio */
+        .portfolio-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Combobox Estilizada */
+        .combobox {
+            background-color: rgba(47, 95, 163, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .combobox:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            background-color: rgba(47, 95, 163, 0.9);
+        }
+
+        .combobox h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #2F5FA3;
+            border-radius: 10px;
+            padding: 25px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #D4A255;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .modal-title {
+            color: #D4A255;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #78A9EC;
+            padding-bottom: 10px;
+        }
+
+        .modal-content p, .modal-content li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .modal-content ul {
+            padding-left: 20px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .section {
+                flex-direction: column;
+            }
+
+            .combobox {
+                width: 100%;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-info h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="profile-image">
+            <img src="/api/placeholder/150/150" alt="Foto de Júlia Eugênia Dias de Souza">
+        </div>
+        <div class="profile-info">
+            <h1>Júlia Eugênia Dias de Souza</h1>
+            <p>49 anos</p>
+            <p>Estudante de Análise e Desenvolvimento de Sistemas</p>
+            <p>Email: contato@juliadias.com</p>
+            <p>Localização: Guarulhos</p>
+        </div>
+    </header>
+
+    <!-- Seções do Portfólio -->
+    <div class="portfolio-container">
+        <!-- Seção 1: Skills -->
+        <div class="section">
+            <div class="combobox" onclick="openModal('hardSkills')">
+                <h3>Hard Skills</h3>
+            </div>
+            <div class="combobox" onclick="openModal('softSkills')">
+                <h3>Soft Skills</h3>
+            </div>
+        </div>
+
+        <!-- Seção 2: Experiência e Formação -->
+        <div class="section">
+            <div class="combobox" onclick="openModal('experiencia')">
+                <h3>Experiência Profissional</h3>
+            </div>
+            <div class="combobox" onclick="openModal('formacao')">
+                <h3>Cursos e Formação</h3>
+            </div>
+        </div>
+
+        <!-- Seção 3: Pretensões e Projetos -->
+        <div class="section">
+            <div class="combobox" onclick="openModal('pretensoes')">
+                <h3>Pretensões Profissionais</h3>
+            </div>
+            <div class="combobox" onclick="openModal('projetos')">
+                <h3>Projetos</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modais -->
+    <div id="hardSkillsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('hardSkills')">&times;</button>
+            <h2 class="modal-title">Habilidades Técnicas (Hard Skills)</h2>
+            <div>
+                <h3>Desenvolvimento e Dados: Um Conjunto de Habilidades Essenciais</h3>
+                <p><strong>Desenvolvimento Web e Lógica:</strong> Noções de Lógica de Programação, Python, HTML & CSS. Noções em SQL (Banco de Dados) e Diagrama de Entidade-Relacionamento (DER).</p>
+                <p><strong>Inteligência Artificial e Automação:</strong> Conhecimento teórico em Machine Learning, Inteligência Artificial e RPA. Experiência prática em automação através do Manychat e elaboração de Prompts eficazes.</p>
+                <p><strong>Análise de Dados e Gestão:</strong> Bom conhecimento em Excel, Power BI, Trello e Looker Studio.</p>
+                <p><strong>Product Owner:</strong> Em constante desenvolvimento para aprimorar a gestão de produtos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="softSkillsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('softSkills')">&times;</button>
+            <h2 class="modal-title">Habilidades Comportamentais (Soft Skills)</h2>
+            <div>
+                <p><strong>Proatividade e Aprendizado Contínuo:</strong> Mente curiosa em busca constante de novos conhecimentos e soluções inovadoras para otimizar processos. Autodidata por natureza, sempre pronta para aplicar o aprendizado no trabalho.</p>
+                <p><strong>Organização e Atenção aos Detalhes:</strong> Senso de organização apurado, com foco na precisão e no cuidado com cada detalhe na execução de tarefas. Busca sempre a praticidade e a estética das entregas.</p>
+                <p><strong>Comunicação e Trabalho em Equipe:</strong> Comunicativa e com facilidade de expressão, compartilha conhecimento ativamente com colegas. Tem a capacidade de idealizar soluções dinamicamente ao receber informações.</p>
+                <p><strong>Liderança e Colaboração:</strong> Forte crença no espírito de equipe e na colaboração mútua. Prioriza um ambiente de trabalho harmonioso, evitando conflitos desnecessários, mas defendendo firmemente o que considera justo.</p>
+                <p><strong>Adaptabilidade e Dinamismo:</strong> Altamente motivada por novos desafios e pela oportunidade de inovar. Busca constantemente formas de automatizar e aprimorar processos, evitando a rotina excessiva.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="experienciaModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('experiencia')">&times;</button>
+            <h2 class="modal-title">Experiência Profissional</h2>
+            <div>
+                <h3>Prefeitura de Guarulhos (2010 - Atual)</h3>
+                <p>Atuação consolidada no setor público, desempenhando funções estratégicas e operacionais essenciais para a administração municipal, incluindo:</p>
+                <ul>
+                    <li><strong>Orçamento Público</strong> – Gestão e análise de recursos financeiros, garantindo alocação eficiente.</li>
+                    <li><strong>Elaboração de PPA, LDO e LOA</strong> – Auxílio na construção de instrumentos de planejamento governamental.</li>
+                    <li><strong>Planejamento Estratégico</strong> – Definição de metas, avaliação de indicadores e otimização de processos administrativos.</li>
+                    <li><strong>Atendimento ao Público</strong> – Mediação entre a administração e os cidadãos, garantindo eficiência e clareza na comunicação.</li>
+                    <li><strong>Logística</strong> – Coordenação de fluxos operacionais e planejamento de suprimentos para garantir funcionamento contínuo das atividades.</li>
+                    <li><strong>Rotina Administrativa</strong> – Elaboração de documentos, gestão de processos internos e relatórios interativos em Excel.</li>
+                    <li><strong>Dashboards e Análises de Dados</strong> – Construção de painéis no Power BI e Looker Studio para facilitar a tomada de decisão.</li>
+                    <li><strong>Treinamento de Reciclagem e Integração para Colaboradores</strong> – Um curso abrangente voltado para a reciclagem de conhecimentos dos funcionários atuais e a integração eficiente de novos colaboradores, promovendo alinhamento, atualização e engajamento dentro da equipe.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="formacaoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('formacao')">&times;</button>
+            <h2 class="modal-title">Cursos e Formação</h2>
+            <div>
+                <ul>
+                    <li><strong>Análise e desenvolvimento de sistemas</strong> - Centro universitário Eniac - cursando - 3º semestre - término em 06/2026.</li>
+                    <li><strong>Curso básico de IA Generativa</strong></li>
+                    <li><strong>Curso de Introdução a ML</strong></li>
+                    <li><strong>Curso de Introdução ao Python</strong></li>
+                    <li><strong>Curso de RPA</strong></li>
+                    <li><strong>Curso de Product Owner</strong></li>
+                    <li><strong>Curso de Excel Avançado</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="projetosModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('projetos')">&times;</button>
+            <h2 class="modal-title">Projetos</h2>
+            <div>
+                <h3>Projetos acadêmicos:</h3>
+                <ul>
+                    <li>Site Zoológico de Guarulhos (HTML, CSS e JSP)</li>
+                    <li>Site Cooperativa de Reciclagem (HTML, CSS e JSP)</li>
+                    <li>Criação de Banco de Dados para o formulário dos Sites</li>
+                    <li>Aplicativo Android Zeladoria da Cidade: Criação das interfaces gráficas</li>
+                    <li>Aplicativo Android Expedição de urnas do Depto Funerário de Guarulhos: Criação das interfaces gráficas</li>
+                    <li>Programação do APP Zeladoria no Android Studio</li>
+                </ul>
+                
+                <h3>Projetos Profissionais:</h3>
+                <ul>
+                    <li>Site para Nzo ria Lembarenganga ni Hongolo - Instituição religiosa</li>
+                    <li>Site para Clínica de Estética Corpo e Alma</li>
+                    <li>Automação de mídias sociais (instagram e WhatsApp) pela plataforma Manychat para Clínica de Estética Corpo e Alma</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="pretensoesModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('pretensoes')">&times;</button>
+            <h2 class="modal-title">Pretensões Profissionais</h2>
+            <div>
+                <p>Busco uma transição de carreira para a área de desenvolvimento com Inteligência Artificial. Embora não tenha experiência profissional comprovada na área, possuo conhecimentos teóricos sólidos e atualmente atuo como estagiária na Universidade Eniac na área de IA. Meu objetivo é aprofundar minha expertise e adquirir experiência prática para me tornar uma profissional qualificada no setor.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções para manipulação dos modais
+        function openModal(modalType) {
+            const modalId = modalType + 'Modal';
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Impede rolagem da página de fundo
+        }
+
+        function closeModal(modalType) {
+            const modalId = modalType + 'Modal';
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restaura rolagem da página
+        }
+
+        // Fechar modal ao clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.getElementsByClassName('modal');
+                for (let i = 0; i < modals.length; i++) {
+                    if (modals[i].style.display === 'flex') {
+                        modals[i].style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
