@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - Fábio Alves De Lima Pereira Dias</title>
+    <style>
+        /* Reset e Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cabeçalho (Header) */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid #d4af37;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+            object-fit: cover;
+            background: linear-gradient(135deg, #2d2d2d, #3a3a3a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .profile-pic-placeholder {
+            font-size: 60px;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .personal-info {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.9), rgba(58, 58, 58, 0.8));
+            padding: 30px;
+            border-radius: 15px;
+            margin: 0 auto;
+            max-width: 600px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .personal-info h1 {
+            color: #d4af37;
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .personal-info p {
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #e0e0e0;
+        }
+
+        .personal-info strong {
+            color: #d4af37;
+        }
+
+        /* Combobox Interativa */
+        .combobox-container {
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .combobox-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .combobox {
+            background: linear-gradient(135deg, #2d2d2d, #3a3a3a);
+            padding: 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .combobox::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .combobox:hover::before {
+            left: 100%;
+        }
+
+        .combobox:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border-color: #d4af37;
+        }
+
+        .combobox h2 {
+            color: #f5f5f5;
+            text-align: center;
+            font-size: 22px;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            margin: 3% auto;
+            width: 85%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            transform: scale(0.8);
+            transition: transform 0.4s ease;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            color: #d4af37;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            color: #d4af37;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 300;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* Conteúdo do Modal */
+        .modal-body h3 {
+            color: #d4af37;
+            margin: 25px 0 15px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        .modal-body ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .modal-body ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .modal-body ul li::before {
+            content: "▶";
+            color: #d4af37;
+            font-size: 12px;
+            position: absolute;
+            left: 0;
+            top: 3px;
+        }
+
+        .modal-body p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+
+        .modal-body em {
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .highlight {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        /* Layout em Grid para Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media screen and (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .personal-info {
+                padding: 25px;
+                max-width: 100%;
+            }
+
+            .personal-info h1 {
+                font-size: 26px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+                margin: 5% auto;
+            }
+
+            .profile-pic {
+                width: 150px;
+                height: 150px;
+            }
+
+            .combobox {
+                padding: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .personal-info h1 {
+                font-size: 22px;
+            }
+
+            .combobox h2 {
+                font-size: 18px;
+            }
+
+            .modal-title {
+                font-size: 22px;
+            }
+
+            .modal-body h3 {
+                font-size: 18px;
+            }
+
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="header-container">
+        <header>
+            <div class="profile-pic">
+                <div class="profile-pic-placeholder">FA</div>
+            </div>
+            <div class="personal-info">
+                <h1>Fábio Alves de Lima Pereira Dias</h1>
+                <p><strong>Idade:</strong> 41 anos</p>
+                <p><strong>Ocupação:</strong> Coach | Mentor | Palestrante</p>
+                <p><strong>Contato:</strong> (11) 95885-6892 | fabio.lima16@yahoo.com.br</p>
+                <p><strong>Localização:</strong> Itaquaquecetuba - SP</p>
+            </div>
+        </header>
+    </div>
+
+    <!-- Seções do Portfólio -->
+    <div class="container">
+        <div class="cards-grid">
+            <div class="combobox-container">
+                <div class="combobox" id="bio-combobox">
+                    <h2>Mini Bio Profissional</h2>
+                </div>
+            </div>
+
+            <div class="combobox-container">
+                <div class="combobox" id="skills-combobox">
+                    <h2>Soft Skills e Hard Skills</h2>
+                </div>
+            </div>
+
+            <div class="combobox-container">
+                <div class="combobox" id="experience-combobox">
+                    <h2>Experiência Profissional</h2>
+                </div>
+            </div>
+
+            <div class="combobox-container">
+                <div class="combobox" id="education-combobox">
+                    <h2>Cursos e Formação</h2>
+                </div>
+            </div>
+
+            <div class="combobox-container">
+                <div class="combobox" id="social-combobox">
+                    <h2>Redes Sociais</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modais -->
+    <!-- Modal para Mini Bio -->
+    <div id="bio-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-bio">&times;</span>
+            <h2 class="modal-title">Mini Bio Profissional</h2>
+            <div class="modal-body">
+                <p>Fábio de Lima é especialista em Desenvolvimento Humano, Líder Espiritual e Consultor em Cultura Organizacional Humanizada. Com ampla trajetória em liderança de equipes, facilitação de processos de autoconhecimento, educação emocional e treinamentos corporativos, atua como coach, mentor e palestrante, inspirando pessoas e organizações a se reconectarem com seus propósitos e evoluírem com consciência.</p>
+                
+                <p>Criador de projetos sociais, religiosos e educacionais que integram espiritualidade, ancestralidade e gestão de pessoas, é reconhecido por sua comunicação sensível, visão estratégica e capacidade de transformação humana por meio do afeto, da escuta e da ação.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Redes Sociais -->
+    <div id="social-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-social">&times;</span>
+            <h2 class="modal-title">Redes Sociais</h2>
+            <div class="modal-body">
+                <h3>Conecte-se comigo</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border-left: 4px solid #d4af37;">
+                        <span class="highlight">Instagram:</span> 
+                        <a href="https://www.instagram.com/eufahdelima/" target="_blank" style="color: #d4af37; text-decoration: none; margin-left: 10px;">@eufahdelima</a>
+                    </li>
+                    <li style="margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border-left: 4px solid #d4af37;">
+                        <span class="highlight">LinkedIn:</span> 
+                        <a href="https://www.linkedin.com/in/eufabiodelima" target="_blank" style="color: #d4af37; text-decoration: none; margin-left: 10px;">eufabiodelima</a>
+                    </li>
+                    <li style="margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border-left: 4px solid #d4af37;">
+                        <span class="highlight">YouTube:</span> 
+                        <a href="https://www.youtube.com/FáhdeLima" target="_blank" style="color: #d4af37; text-decoration: none; margin-left: 10px;">Fáh de Lima</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Skills -->
+    <div id="skills-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-skills">&times;</span>
+            <h2 class="modal-title">Hard Skills e Soft Skills</h2>
+            <div class="modal-body">
+                <h3>Hard Skills (Habilidades Técnicas)</h3>
+                <p><em>Foco em liderança, treinamentos, comunicação e gestão</em></p>
+                <ul>
+                    <li><span class="highlight">Design Instrucional</span> – Criação de experiências de aprendizagem, planos de aulas e conteúdos para treinamentos.</li>
+                    <li><span class="highlight">Facilitação de Workshops e Palestras</span> – Condução de grupos com técnicas participativas.</li>
+                    <li><span class="highlight">Coaching Individual e em Grupo</span> – Aplicação de métodos e ferramentas de coaching com foco em performance, autoconhecimento e resultados.</li>
+                    <li><span class="highlight">Gestão de Equipes e Clima Organizacional</span> – Estruturação de estratégias para engajamento, feedbacks, gestão por competências e cultura.</li>
+                    <li><span class="highlight">Comunicação Estratégica e Oratória</span> – Desenvolvimento e entrega de apresentações, discursos e falas públicas com alto impacto.</li>
+                    <li><span class="highlight">Produção de Conteúdo Digital</span> – Criação de posts, vídeos, ebooks, e lives com autoridade em desenvolvimento humano.</li>
+                    <li><span class="highlight">Mentoria em Inteligência Emocional e Carreira</span> – Orientação com base em mapa de talentos, valores e objetivos.</li>
+                    <li><span class="highlight">Lean Six Sigma</span> – Metodologia para melhoria de processos e excelência operacional.</li>
+                    <li><span class="highlight">Sistemas de CRM</span> – Especialista em Microsoft Dynamics e ferramentas de relacionamento com cliente.</li>
+                </ul>
+                
+                <h3>Soft Skills de Destaque</h3>
+                <ul>
+                    <li><span class="highlight">Liderança Inspiradora</span> – Capacidade de motivar e guiar equipes rumo ao sucesso.</li>
+                    <li><span class="highlight">Empatia e Escuta Ativa</span> – Compreensão profunda das necessidades dos outros.</li>
+                    <li><span class="highlight">Gestão do Tempo e Produtividade Pessoal</span> – Organização eficiente de tarefas e prioridades.</li>
+                    <li><span class="highlight">Inteligência Emocional</span> – Gestão das próprias emoções e das relações interpessoais.</li>
+                    <li><span class="highlight">Autoconfiança e Presença</span> – Postura segura e impactante em diferentes contextos.</li>
+                    <li><span class="highlight">Criatividade e Inovação com Propósito</span> – Soluções originais alinhadas aos objetivos.</li>
+                    <li><span class="highlight">Resiliência e Adaptação em Crises</span> – Flexibilidade para superar desafios.</li>
+                    <li><span class="highlight">Visão Sistêmica e Estratégica</span> – Compreensão ampla para planejamento e tomada de decisões.</li>
+                    <li><span class="highlight">Capacidade de Engajar e Conduzir Pessoas com Propósito</span> – Mobilização de equipes em torno de objetivos comuns.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Experiência Profissional -->
+    <div id="experience-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-experience">&times;</span>
+            <h2 class="modal-title">Experiência Profissional</h2>
+            <div class="modal-body">
+                <h3>Qualificações Principais</h3>
+                <p>Liderança e Gestão de Pessoas e Equipes; Desenvolvimento de Capital Humano, Treinamento e Desenvolvimento; 
+                Recrutamento e Seleção (Cargos Operacionais e administrativos); Controle de KPI's; Motivação; Coaching e Mentoring.</p>
+                
+                <p>Atuando nos seguimentos de CRC, SAC, BKO, representando importantes marcas como <span class="highlight">Volkswagen, Ticket Serviços, 
+                Chevrolet, Interodonto, BMG e Facebook/Meta</span>. Em todas essas empresas teve forte enfoque no colaborador para alcançar resultados, 
+                fazendo aflorar nos colaboradores o melhor deles, conquistando a confiança da equipe e consequentemente o aumento da aderência, 
+                assiduidade e QA operacional; aumento das vendas, êxito nas oportunidades, promoções internas e redução do Turn Over.</p>
+
+                <h3>Atento Brasil S/A (01/2019 a 09/2023)</h3>
+                <p><span class="highlight">Cargo:</span> Team Leader II</p>
+                <ul>
+                    <li>Sales Development, Especialista em sistemas de CRM</li>
+                    <li>Projetos de Inteligência Artificial</li>
+                    <li>Programas de Marketing Coordinator, Incubador e Agency</li>
+                    <li>Processos de Melhoria contínua e Clima Organizacional</li>
+                </ul>
+
+                <h3>Teleperformance S/A (10/2016 a 09/2017)</h3>
+                <p><span class="highlight">Cargo:</span> Operations Supervisor - Terceirizado Chevrolet</p>
+                <ul>
+                    <li>Gestão de equipes acima de 20 colaboradores</li>
+                    <li>Equipes Inbound (Linha, Chat e E-mail) e Outbound BKO</li>
+                </ul>
+
+                <h3>Liq Corp (07/2012 a 06/2016)</h3>
+                <p><span class="highlight">Cargo:</span> Supervisor de Operações – Terceirizado Volkswagen</p>
+                <ul>
+                    <li>Gestão de equipes acima de 20 colaboradores</li>
+                    <li>Assistente de BackOffice – reportando diretamente ao gestor da conta</li>
+                    <li>Suporte aos supervisores e coordenadores</li>
+                    <li>Especialista em sistemas de CRM Microsoft Dynamics e discadores Avaya</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Educação -->
+    <div id="education-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-education">&times;</span>
+            <h2 class="modal-title">Cursos e Formação</h2>
+            <div class="modal-body">
+                <h3>Formação Acadêmica</h3>
+                <ul>
+                    <li><span class="highlight">MBA em Lean Six Sigma e Excelência Operacional</span> – FM2S Educação e Consultoria (cursando)</li>
+                    <li><span class="highlight">Certificação Green Belt em Lean Six Sigma</span></li>
+                    <li><span class="highlight">MBA em Gestão de Pessoas</span> – Universidade Anhanguera</li>
+                    <li><span class="highlight">Gestão em Recursos Humanos</span> – Faculdade Flamingo</li>
+                </ul>
+                
+                <h3>Certificações em Coaching e Desenvolvimento</h3>
+                <ul>
+                    <li><span class="highlight">Professional & Life Coaching</span> – Summit Leadership</li>
+                    <li><span class="highlight">Professional Coach</span> – Summit Leadership</li>
+                    <li><span class="highlight">Leader Coaching</span> – Summit Leadership</li>
+                    <li><span class="highlight">Self Coaching</span> – Summit Leadership</li>
+                    <li><span class="highlight">Inteligência Emocional</span> – Slap</li>
+                    <li><span class="highlight">PNL Essencial</span> – Instituto Idea</li>
+                </ul>
+                
+                <h3>Especializações Técnicas</h3>
+                <ul>
+                    <li>Especialista em sistemas de CRM (Microsoft Dynamics)</li>
+                    <li>Ferramentas de discagem e contact center (Avaya)</li>
+                    <li>Metodologias ágeis e melhoria contínua</li>
+                    <li>Projetos de Inteligência Artificial aplicada</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar elementos conforme scroll
+        function checkScroll() {
+            const elements = document.querySelectorAll('.container, .combobox-container');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Inicializar visibilidade para o cabeçalho e cards
+        document.getElementById('header-container').classList.add('visible');
+        
+        // Mostrar todos os cards imediatamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const containers = document.querySelectorAll('.combobox-container');
+            containers.forEach(container => {
+                container.classList.add('visible');
+            });
+        });
+
+        // Função para abrir modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Função para fechar modal
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event Listeners para os comboboxes
+        document.getElementById('bio-combobox').addEventListener('click', () => {
+            openModal('bio-modal');
+        });
+
+        document.getElementById('skills-combobox').addEventListener('click', () => {
+            openModal('skills-modal');
+        });
+
+        document.getElementById('experience-combobox').addEventListener('click', () => {
+            openModal('experience-modal');
+        });
+
+        document.getElementById('education-combobox').addEventListener('click', () => {
+            openModal('education-modal');
+        });
+
+        document.getElementById('social-combobox').addEventListener('click', () => {
+            openModal('social-modal');
+        });
+
+        // Event Listeners para os botões de fechar
+        document.getElementById('close-bio').addEventListener('click', () => {
+            closeModal('bio-modal');
+        });
+
+        document.getElementById('close-skills').addEventListener('click', () => {
+            closeModal('skills-modal');
+        });
+
+        document.getElementById('close-experience').addEventListener('click', () => {
+            closeModal('experience-modal');
+        });
+
+        document.getElementById('close-education').addEventListener('click', () => {
+            closeModal('education-modal');
+        });
+
+        document.getElementById('close-social').addEventListener('click', () => {
+            closeModal('social-modal');
+        });
+
+        // Fechar modal ao clicar fora do conteúdo
+        window.addEventListener('click', (event) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Adicionar efeito de scroll
+        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('load', function() {
+            checkScroll();
+            // Garantir que todos os event listeners estejam funcionando
+            const containers = document.querySelectorAll('.combobox-container');
+            containers.forEach(container => {
+                container.classList.add('visible');
+            });
+        });
+        
+        // Verificar scroll inicial e inicializar cards
+        checkScroll();
+        
+        // Garantir que os cards sejam visíveis imediatamente
+        setTimeout(function() {
+            const containers = document.querySelectorAll('.combobox-container');
+            containers.forEach(container => {
+                container.classList.add('visible');
+            });
+        }, 100);
+    </script>
+</body>
+</html>
